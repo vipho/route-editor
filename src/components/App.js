@@ -1,7 +1,10 @@
 import React from 'react';
 import 'bootstrap/dist/css/bootstrap.css';
 
+import { YMaps, Map } from 'react-yandex-maps';
 import PlacemarkList from './PlacemarkList';
+
+const mapState = { center: [55.736807, 37.618471], zoom: 15 };
 
 class App extends React.Component {
     constructor() {
@@ -33,8 +36,14 @@ class App extends React.Component {
                         />
                     </ul>
                 </div>
-                <div className="col">
-                    Map
+                <div className="col-8">
+                    <YMaps>
+                        <Map state={mapState}
+                             width="100%"
+                             height="500px"
+                        >
+                        </Map>
+                    </YMaps>
                 </div>
             </div>
         )
