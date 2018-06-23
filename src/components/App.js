@@ -4,6 +4,7 @@ import 'bootstrap/dist/css/bootstrap.css';
 import { YMaps, Map } from 'react-yandex-maps';
 import PlacemarkList from './PlacemarkList';
 import Placemarks from './Placemarks';
+import Polyline from './Polyline';
 
 const mapState = { center: [55.736807, 37.618471], zoom: 15 };
 
@@ -47,6 +48,7 @@ class App extends React.Component {
                             <Placemarks placemarks={ this.state.placemarks }
                                         onDrag={ this.onDrag.bind(this) }
                             />
+                            <Polyline placemarks={ this.state.placemarks }/>
                         </Map>
                     </YMaps>
                 </div>
