@@ -3,6 +3,7 @@ import 'bootstrap/dist/css/bootstrap.css';
 
 import { YMaps, Map } from 'react-yandex-maps';
 import PlacemarkList from './PlacemarkList';
+import Placemarks from './Placemarks';
 
 const mapState = { center: [55.736807, 37.618471], zoom: 15 };
 
@@ -41,12 +42,32 @@ class App extends React.Component {
                         <Map state={mapState}
                              width="100%"
                              height="500px"
+                             instanceRef={ this.getMapRef }
                         >
+                            <Placemarks placemarks={ this.state.placemarks }
+                                        onDrag={ this.onDrag.bind(this) }
+                            />
                         </Map>
                     </YMaps>
                 </div>
             </div>
         )
+    };
+
+    getMapRef = ref => {
+        this.mapRef = ref;
+    };
+
+    onDrag = ( event, i ) => {
+        const placemark = event.get( 'target' );
+
+        let newPlacemarks = this.state.placemarks.slice();
+        newPlacemarks[ i ].coordinates = placemark.geometry.getCoordinates();
+
+        this.setState({
+            placemarkName: '',
+            placemarks: newPlacemarks,
+        });
     };
 
     onChange = event => {
@@ -61,6 +82,7 @@ class App extends React.Component {
         const newPlacemark = {
             id: this.nextPlacemarkId++,
             balloonContent: this.state.placemarkName,
+            coordinates: this.mapRef.getCenter(),
         };
         this.setState({
             placemarkName: '',
