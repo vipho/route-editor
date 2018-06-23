@@ -32,11 +32,10 @@ class App extends React.Component {
                             />
                         </div>
                     </form>
-                    <ul className="list-group">
-                        <PlacemarkList placemarks={ this.state.placemarks }
-                                       deletePlacemark={ this.deletePlacemark.bind(this) }
-                        />
-                    </ul>
+                    <PlacemarkList placemarks={ this.state.placemarks }
+                                   onDragEnd={ this.onDragEnd.bind( this ) }
+                                   deletePlacemark={ this.deletePlacemark.bind( this ) }
+                    />
                 </div>
                 <div className="col-8">
                     <YMaps>
@@ -92,6 +91,20 @@ class App extends React.Component {
         });
     };
 
+    onDragEnd = result => {
+        if (!result.destination) {
+            return;
+        }
+
+        const placemarks = Array.from( this.state.placemarks );
+        const [removed] = placemarks.splice( result.source.index, 1 );
+        placemarks.splice( result.destination.index, 0, removed );
+
+        this.setState({
+            placemarks
+        });
+    };
+
     deletePlacemark = i => {
         let newPlacemarks = this.state.placemarks.slice();
         newPlacemarks.splice( i, 1 );
@@ -100,7 +113,7 @@ class App extends React.Component {
             placemarkName: '',
             placemarks: newPlacemarks,
         });
-    }
+    };
 }
 
 export default App;
