@@ -21,17 +21,21 @@ class App extends React.Component {
     };
 
     render() {
+        const form = this.state.mapRef && (
+            <form onSubmit={ this.onSubmit }>
+                <div className="form-group">
+                    <input type="text" className="form-control" placeholder="Новая точка маршрута"
+                           value={ this.state.placemarkName }
+                           onChange={ this.onChange }
+                    />
+                </div>
+            </form>
+        );
+
         return (
             <div className="row">
                 <div className="col-4">
-                    <form onSubmit={ this.onSubmit }>
-                        <div className="form-group">
-                            <input type="text" className="form-control" placeholder="Новая точка маршрута"
-                                   value={ this.state.placemarkName }
-                                   onChange={ this.onChange }
-                            />
-                        </div>
-                    </form>
+                    {form}
                     <PlacemarkList placemarks={ this.state.placemarks }
                                    onDragEnd={ this.onDragEnd.bind( this ) }
                                    deletePlacemark={ this.deletePlacemark.bind( this ) }
@@ -56,7 +60,9 @@ class App extends React.Component {
     };
 
     getMapRef = ref => {
-        this.mapRef = ref;
+        this.setState({
+            mapRef: ref
+        });
     };
 
     onDrag = ( event, i ) => {
@@ -77,13 +83,15 @@ class App extends React.Component {
 
     onSubmit = event => {
         event.preventDefault();
-        if( this.state.placemarkName.length === 0 )
-            return;
+        if( this.state.placemarkName.length === 0
+            || this.state.mapRef === undefined
+        )
+            return false;
 
         const newPlacemark = {
             id: this.nextPlacemarkId++,
             balloonContent: this.state.placemarkName,
-            coordinates: this.mapRef.getCenter(),
+            coordinates: this.state.mapRef.getCenter(),
         };
         this.setState({
             placemarkName: '',

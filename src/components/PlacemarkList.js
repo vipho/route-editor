@@ -4,20 +4,6 @@ import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 function PlacemarkList( props ) {
     const { placemarks, onDragEnd, deletePlacemark } = props;
 
-    // return placemarks.map( ( item, i ) => (
-    //     <li className="list-group-item d-flex justify-content-between align-items-center"
-    //         key={ item.id }
-    //     >
-    //         {item.balloonContent}
-    //
-    //         <span style={ {cursor: "pointer"} }
-    //               onClick={ ( i => () => deletePlacemark( i ) )( i ) }
-    //         >
-    //             &times;
-    //         </span>
-    //     </li>
-    // ));
-
     return (
         <DragDropContext onDragEnd={ onDragEnd }>
             <Droppable droppableId="droppable">
@@ -31,8 +17,9 @@ function PlacemarkList( props ) {
                                         {...provided.draggableProps}
                                         {...provided.dragHandleProps}
                                     >
-                                        {item.balloonContent}
+                                        <span className="d-inline-block text-truncate">{item.balloonContent}</span>
                                         <span style={ {cursor: "pointer"} }
+                                              className="pl-3"
                                               onClick={ ( i => () => deletePlacemark( i ) )( i ) }
                                         >
                                             &times;
